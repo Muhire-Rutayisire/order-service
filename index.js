@@ -2,6 +2,7 @@
 const express = require('express');  // Express is a minimal Node.js framework for building web applications.
 const amqp = require('amqplib/callback_api');  // AMQP (Advanced Message Queuing Protocol) client library for communicating with RabbitMQ.
 const cors = require('cors');  // CORS (Cross-Origin Resource Sharing) middleware for handling cross-origin requests.
+require("dotenv").config();
 
 const app = express();  // Create an Express application instance.
 app.use(express.json());  // Middleware to parse incoming JSON request bodies.
@@ -11,7 +12,8 @@ app.use(express.json());  // Middleware to parse incoming JSON request bodies.
 app.use(cors());
 
 // URL for connecting to RabbitMQ (localhost means it's running locally).
-const RABBITMQ_URL = 'amqp://localhost';
+const RABBITMQ_URL = process.env.RABBIT_CONNECTION_URL;
+const PORT = 3000;
 
 // Define a POST route for creating orders
 // This route is accessed when a client (e.g., frontend) sends an order.
@@ -53,7 +55,7 @@ app.post('/orders', (req, res) => {
 
 // Set the port where the Express server will listen for incoming requests.
 // In this case, it's running on port 3000.
-const PORT = 3000;
+
 app.listen(PORT, () => {
   console.log(`Order service is running on http://localhost:${PORT}`);
 });
